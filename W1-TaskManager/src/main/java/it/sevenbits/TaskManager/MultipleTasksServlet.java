@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import it.sevenbits.TaskManager.manager.Task;
 import it.sevenbits.TaskManager.manager.TaskManager;
+import sun.security.krb5.internal.AuthorizationData;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
