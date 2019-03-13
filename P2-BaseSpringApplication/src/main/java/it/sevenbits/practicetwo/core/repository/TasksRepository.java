@@ -14,11 +14,6 @@ public class TasksRepository implements ITasksRepository {
     private Map<String, Task> taskMap = new HashMap<>();
 
     @Override
-    public Task getTask(String taskID) {
-        return taskMap.get(taskID);
-    }
-
-    @Override
     public String addTask(AddTaskRequest addTaskRequest) {
         UUID taskID = UUID.randomUUID();
         taskMap.put(taskID.toString(), new Task(taskID.toString(), addTaskRequest.getText()));
