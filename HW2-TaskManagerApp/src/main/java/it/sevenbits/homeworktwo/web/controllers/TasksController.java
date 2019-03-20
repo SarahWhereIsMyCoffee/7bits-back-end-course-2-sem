@@ -85,6 +85,7 @@ public class TasksController {
             throw new TaskNotFoundException();
         }
 
+        ResponseEntity.status(HttpStatus.OK);
         return ResponseEntity
                 .ok()
                 .body(currentTask);
@@ -101,7 +102,7 @@ public class TasksController {
             throw new TaskNotFoundException();
         }
 
-
+        ResponseEntity.status(HttpStatus.OK);
         return ResponseEntity.
                 ok().
                 body(tasksRepository.deleteTask(id));
@@ -130,7 +131,12 @@ public class TasksController {
                 Optional.ofNullable(updateTaskRequest.getStatus())
                         .orElseThrow(InvalidTaskStatusException::new)
         );
-        
+
+        /*
+        В API почему-то указан 204 код для хорошего завершения,
+        но ведь 204 - "Нет содержимого". Немного не понял этого.
+         */
+        ResponseEntity.status(HttpStatus.OK);
         return ResponseEntity.
                 ok().
                 body(tasksRepository.replaceTask(id, currentTask));
