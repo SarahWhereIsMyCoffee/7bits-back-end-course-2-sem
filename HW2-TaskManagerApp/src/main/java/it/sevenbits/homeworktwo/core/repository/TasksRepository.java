@@ -34,8 +34,8 @@ public class TasksRepository implements ITasksRepository {
     }
 
     @Override
-    public void deleteTask(String id) {
-        taskMap.remove(id);
+    public Task deleteTask(String id) {
+        return taskMap.remove(id);
     }
 
     @Override

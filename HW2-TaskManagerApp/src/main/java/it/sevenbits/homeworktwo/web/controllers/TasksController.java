@@ -91,7 +91,7 @@ public class TasksController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public void deleteTask(@PathVariable("id") String id) {
+    public ResponseEntity<Task> deleteTask(@PathVariable("id") String id) {
         if (!taskIDValidator.isValidTaskID(id)) {
             throw new InvalidTaskIDException();
         }
@@ -101,7 +101,10 @@ public class TasksController {
             throw new TaskNotFoundException();
         }
 
-        tasksRepository.deleteTask(id);
+
+        return ResponseEntity.
+                ok().
+                body(tasksRepository.deleteTask(id));
     }
 
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -127,7 +130,7 @@ public class TasksController {
                 Optional.ofNullable(updateTaskRequest.getStatus())
                         .orElseThrow(InvalidTaskStatusException::new)
         );
-
+        
         return ResponseEntity.
                 ok().
                 body(tasksRepository.replaceTask(id, currentTask));
