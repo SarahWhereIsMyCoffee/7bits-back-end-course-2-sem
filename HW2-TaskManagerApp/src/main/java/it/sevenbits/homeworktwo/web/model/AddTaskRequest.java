@@ -2,32 +2,59 @@ package it.sevenbits.homeworktwo.web.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.sevenbits.homeworktwo.web.validation.status.constraint.ITaskStatusConstraint;
-import it.sevenbits.homeworktwo.web.validation.text.constraint.ITaskTextConstraint;
+import it.sevenbits.homeworktwo.core.validation.status.constraint.ITaskStatusConstraint;
+import it.sevenbits.homeworktwo.core.validation.text.constraint.ITaskTextConstraint;
 
 import javax.validation.constraints.NotBlank;
 
+/**
+ * This model separates query logic of adding new task.
+ * from application business logic.
+ */
 public class AddTaskRequest {
+    /**
+     *
+     */
     @NotBlank
     @ITaskTextConstraint
     private String text;
 
+    /**
+     *
+     */
     @ITaskStatusConstraint
     @NotBlank
     private String status;
 
+    /**
+     * Constructor of the model.
+     * Creates a JSON object.
+     *
+     * @param text String Json property.
+     * @param status String Json property.
+     */
     @JsonCreator
-    public AddTaskRequest(@JsonProperty("text") String text,
-                          @JsonProperty("status") String status) {
+    public AddTaskRequest(@JsonProperty("text") final String text,
+                          @JsonProperty("status") final String status) {
         this.text = text;
         this.status = status;
     }
 
-    public String getText() {
+    /**
+     * Getter for the text field.
+     *
+     * @return String text of the model.
+     */
+    public final String getText() {
         return text;
     }
 
-    public String getStatus() {
+    /**
+     * Getter for the status field.
+     *
+     * @return String status of the model.
+     */
+    public final String getStatus() {
         return status;
     }
 }

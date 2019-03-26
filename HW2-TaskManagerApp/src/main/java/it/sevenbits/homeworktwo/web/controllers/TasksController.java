@@ -8,9 +8,9 @@ import it.sevenbits.homeworktwo.web.exceptions.TaskNotFoundException;
 import it.sevenbits.homeworktwo.web.exceptions.InvalidTaskIDException;
 import it.sevenbits.homeworktwo.web.model.AddTaskRequest;
 import it.sevenbits.homeworktwo.web.model.UpdateTaskRequest;
-import it.sevenbits.homeworktwo.web.validation.id.service.ITaskIDValidator;
-import it.sevenbits.homeworktwo.web.validation.status.service.ITaskStatusValidator;
-import it.sevenbits.homeworktwo.web.validation.text.service.ITaskTextValidator;
+import it.sevenbits.homeworktwo.core.validation.id.service.ITaskIDValidator;
+import it.sevenbits.homeworktwo.core.validation.status.service.ITaskStatusValidator;
+import it.sevenbits.homeworktwo.core.validation.text.service.ITaskTextValidator;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,6 +31,11 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This class presents Spring REST @Controller controller functionality
+ * using for handling different HTTP requests.
+ */
+
 @Controller
 @RequestMapping("/tasks")
 public class TasksController {
@@ -39,7 +44,14 @@ public class TasksController {
     private final ITaskStatusValidator taskStatusValidator;
     private final ITaskTextValidator taskTextValidator;
 
-
+    /**
+     * Class constructor.
+     *
+     * @param tasksRepository ITaskRepository instance.
+     * @param taskIDValidator ITaskIDValidator service instance.
+     * @param taskStatusValidator ITaskStatusValidator service instance.
+     * @param taskTextValidator ITaskTextValidator service instance.
+     */
     public TasksController(final ITasksRepository tasksRepository,
                            final ITaskIDValidator taskIDValidator,
                            final ITaskStatusValidator taskStatusValidator,
@@ -50,6 +62,15 @@ public class TasksController {
         this.taskTextValidator = taskTextValidator;
     }
 
+    /**
+     * Method that returns list of all tasks from task repository.
+     * That method handles GET request to "/".
+
+     * @return Response that contains:
+     *         - header "Content-Type": "application/json;charset=UTF-8";
+     *         - body: task list filtered by passed status (or "inbox" status if null or empty string was passed);
+     *         - status code: 200 - OK.
+     */
     @GetMapping
     @ResponseBody
     public ResponseEntity<List<Task>> getAllTasks() {
@@ -59,9 +80,18 @@ public class TasksController {
                 .body(tasksRepository.getAllTasks());
     }
 
+    /**
+     * Method that adds new task to repository.
+     * That method handles POST request to "/".
+     *
+     * @param addTaskRequest "Add task" request model. It is required parameter.
+     *                       If it is not valid, status code "400 - Bad Request" will be returned.
+     * @return Response that contains all the information about the operation status,
+     *      content type and location.
+     */
     @PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ResponseEntity<Task> create(@Valid @RequestBody AddTaskRequest addTaskRequest) {
+    public ResponseEntity<Task> create(@Valid @RequestBody final AddTaskRequest addTaskRequest) {
         URI location = UriComponentsBuilder
                 .fromPath("/tasks/")
                 .path(String.valueOf(tasksRepository.addTask(addTaskRequest)))
@@ -75,8 +105,16 @@ public class TasksController {
                 .build();
     }
 
+    /**
+     * Method that returns task by passed task id.
+     * That method handles GET request to "/tasks/{id}".
+     *
+     * @param id Id of task to return. It is required parameter.
+     * @return Response that contains all the information
+     *      about the operation status,content type and location.
+     */
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Task> getTask(@PathVariable("id") String id) {
+    public ResponseEntity<Task> getTaskByID(@PathVariable("id") final String id) {
         if (!taskIDValidator.isValidTaskID(id)) {
             throw new InvalidTaskIDException();
         }
@@ -92,9 +130,17 @@ public class TasksController {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .body(currentTask);
     }
-
+    /**
+     *
+     * Method that deletes task by passed task id.
+     * That method handles DELETE request to "/tasks/{id}".
+     *
+     * @param id Id of task to remove. It is required parameter.
+     * @return Response that contains all the information
+     *      about the operation status,content type and location.
+     */
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Task> deleteTask(@PathVariable("id") String id) {
+    public ResponseEntity<Task> deleteTaskByID(@PathVariable("id") final String id) {
         if (!taskIDValidator.isValidTaskID(id)) {
             throw new InvalidTaskIDException();
         }
@@ -112,10 +158,21 @@ public class TasksController {
                 .build();
     }
 
+    /**
+     * Method that updates task with passed new task text and/or task status by passed task id.
+     * That method handles PATCH request to "/tasks/{id}".
+     *
+     * @param id Id of task to update. It is required parameter.
+     * @param updateTaskRequest "Update task" request model.
+     *                          If it is not valid, status code "400 - Bad Request" will be returned.
+     *
+     * @return Response that contains all the information
+     *      about the operation status,content type and location.
+     */
     @PatchMapping(value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Object> patchTask(@PathVariable("id") String id,
-                                            @Valid @RequestBody UpdateTaskRequest updateTaskRequest) {
+    public ResponseEntity<Object> patchTask(@PathVariable("id") final String id,
+                                            @Valid @RequestBody final UpdateTaskRequest updateTaskRequest) {
         if (!taskIDValidator.isValidTaskID(id)) {
             throw new InvalidTaskIDException();
         }
