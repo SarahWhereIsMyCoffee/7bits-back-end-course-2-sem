@@ -11,7 +11,11 @@ import java.util.Map;
 import java.util.UUID;
 
 public class TasksRepository implements ITasksRepository {
-    private Map<String, Task> taskMap = new HashMap<>();
+    private Map<String, Task> taskMap;
+
+    public TasksRepository() {
+        taskMap = new HashMap<>();
+    }
 
     @Override
     public String addTask(final AddTaskRequest addTaskRequest) {

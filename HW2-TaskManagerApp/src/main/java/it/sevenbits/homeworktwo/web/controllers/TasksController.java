@@ -40,10 +40,10 @@ public class TasksController {
     private final ITaskTextValidator taskTextValidator;
 
 
-    public TasksController(ITasksRepository tasksRepository,
-                           ITaskIDValidator taskIDValidator,
-                           ITaskStatusValidator taskStatusValidator,
-                           ITaskTextValidator taskTextValidator) {
+    public TasksController(final ITasksRepository tasksRepository,
+                           final ITaskIDValidator taskIDValidator,
+                           final ITaskStatusValidator taskStatusValidator,
+                           final ITaskTextValidator taskTextValidator) {
         this.tasksRepository = tasksRepository;
         this.taskIDValidator = taskIDValidator;
         this.taskStatusValidator = taskStatusValidator;
@@ -59,7 +59,7 @@ public class TasksController {
                 .body(tasksRepository.getAllTasks());
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ResponseEntity<Task> create(@Valid @RequestBody AddTaskRequest addTaskRequest) {
         URI location = UriComponentsBuilder
@@ -71,6 +71,7 @@ public class TasksController {
         ResponseEntity.status(HttpStatus.CREATED);
         return ResponseEntity
                 .created(location)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .build();
     }
 
@@ -88,6 +89,7 @@ public class TasksController {
         ResponseEntity.status(HttpStatus.OK);
         return ResponseEntity
                 .ok()
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .body(currentTask);
     }
 
@@ -101,16 +103,19 @@ public class TasksController {
         if (currentTask == null) {
             throw new TaskNotFoundException();
         }
+        tasksRepository.deleteTask(id);
 
         ResponseEntity.status(HttpStatus.OK);
-        return ResponseEntity.
-                ok().
-                body(tasksRepository.deleteTask(id));
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .build();
     }
 
-    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Task> patchTask(@PathVariable("id") String id,
-                                          @Valid @RequestBody UpdateTaskRequest updateTaskRequest) {
+    @PatchMapping(value = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Object> patchTask(@PathVariable("id") String id,
+                                            @Valid @RequestBody UpdateTaskRequest updateTaskRequest) {
         if (!taskIDValidator.isValidTaskID(id)) {
             throw new InvalidTaskIDException();
         }
@@ -123,22 +128,21 @@ public class TasksController {
             throw new InvalidTaskIDException();
         }
 
+        if (tasksRepository.getTask(id) == null) {
+            throw new TaskNotFoundException();
+        }
 
-        Task currentTask = new Task(
+        tasksRepository.replaceTask(id, new Task(
                 id,
                 Optional.ofNullable(updateTaskRequest.getText())
                         .orElseThrow(InvalidTaskTextException::new),
                 Optional.ofNullable(updateTaskRequest.getStatus())
                         .orElseThrow(InvalidTaskStatusException::new)
-        );
+        ));
 
-        /*
-        В API почему-то указан 204 код для хорошего завершения,
-        но ведь 204 - "Нет содержимого". Немного не понял этого.
-         */
-        ResponseEntity.status(HttpStatus.OK);
-        return ResponseEntity.
-                ok().
-                body(tasksRepository.replaceTask(id, currentTask));
+        ResponseEntity.status(HttpStatus.NO_CONTENT);
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 }
