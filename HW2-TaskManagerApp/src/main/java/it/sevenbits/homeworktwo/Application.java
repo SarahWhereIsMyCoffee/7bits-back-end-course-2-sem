@@ -9,10 +9,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Application {
     /**
+     * Constructor off the class.
+     */
+    protected Application() {}
+    /**
      * Main method of Application class.
      * @param args Command args parameter.
      */
-    private static void main(final String[] args) {
+    public static void main(final String[] args) {
         SpringApplication.run(Application.class, args);
     }
 }
