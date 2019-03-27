@@ -24,9 +24,7 @@ public class RestResponseEntityExceptionHandler
      *
      * @param ex Instance of exception to handle.
      * @param request WebRequest instance.
-     * @return Response sent to request source. It contains:
-     *      - header "Content-Type": "application/json;charset=UTF-8";
-     *      - status code: "400 - Bad Request".
+     * @return Response sent to request source. It contains information about content type and HTTP status
      */
     @ExceptionHandler
             (value = {
@@ -48,9 +46,7 @@ public class RestResponseEntityExceptionHandler
      *
      * @param ex Instance of exception to handle.
      * @param request WebRequest instance.
-     * @return Response sent to request source. It contains:
-     *      - header "Content-Type": "application/json;charset=UTF-8";
-     *      - status code: "400 - Bad Request".
+     * @return Response sent to request source. It contains information about content type and HTTP status.
      */
     @ExceptionHandler
             (value = {InvalidTaskIDException.class})
@@ -69,9 +65,7 @@ public class RestResponseEntityExceptionHandler
      *
      * @param ex Instance of exception to handle.
      * @param request WebRequest instance.
-     * @return Response sent to request source. It contains:
-     *      - header "Content-Type": "application/json;charset=UTF-8";
-     *      - status code: "400 - Bad Request".
+     * @return Response sent to request source. It contains information about content type and HTTP status.
      */
     @ExceptionHandler
             (value = {TaskNotFoundException.class})

@@ -66,10 +66,10 @@ public class TasksController {
      * Method that returns list of all tasks from task repository.
      * That method handles GET request to "/".
 
-     * @return Response that contains:
-     *         - header "Content-Type": "application/json;charset=UTF-8";
-     *         - body: task list filtered by passed status (or "inbox" status if null or empty string was passed);
-     *         - status code: 200 - OK.
+     * @return Response that contains information about:
+     *                                -Request body
+     *                                -Content type
+     *                                -HTTP status
      */
     @GetMapping
     @ResponseBody
