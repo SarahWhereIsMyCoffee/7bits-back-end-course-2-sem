@@ -32,7 +32,6 @@ public class RestResponseEntityExceptionHandler
             InvalidTaskTextException.class})
     protected ResponseEntity<Object> invalidStatus(
             final RuntimeException ex, final WebRequest request) {
-        String bodyOfResponse = "Invalid task parameters";
 
         return handleExceptionInternal(
                 ex,
@@ -71,7 +70,6 @@ public class RestResponseEntityExceptionHandler
             (value = {TaskNotFoundException.class})
     protected ResponseEntity<Object> invalidTask(
             final RuntimeException ex, final WebRequest request) {
-        String bodyOfResponse = "Task not found";
 
         return handleExceptionInternal(
                 ex,

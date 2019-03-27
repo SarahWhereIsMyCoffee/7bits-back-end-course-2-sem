@@ -60,7 +60,7 @@ public class TasksRepository implements ITasksRepository {
     }
 
     /**
-     * This method removes a "Task" model from repository taken by ID.
+     * This method removes a "Task" model from repository by ID.
      *
      * @param id String parameter
      * @return deleted "Task" model
@@ -72,7 +72,7 @@ public class TasksRepository implements ITasksRepository {
 
     /**
      /**
-     * This method removes a "Task" model from repository taken by ID.
+     * This method replaces a "Task" model from repository by ID.
      *
      * @param id String parameter for define a "Task" model we wanna to replace.
      * @param newTask new "Task" model
