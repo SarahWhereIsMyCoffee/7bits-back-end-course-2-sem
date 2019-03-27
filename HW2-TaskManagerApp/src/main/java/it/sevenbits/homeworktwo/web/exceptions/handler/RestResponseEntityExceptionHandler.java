@@ -36,8 +36,12 @@ public class RestResponseEntityExceptionHandler
             final RuntimeException ex, final WebRequest request) {
         String bodyOfResponse = "Invalid task parameters";
 
-        return handleExceptionInternal(ex, bodyOfResponse,
-                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+        return handleExceptionInternal(
+                ex,
+                null,
+                new HttpHeaders(),
+                HttpStatus.BAD_REQUEST,
+                request);
     }
     /**
      * Method that handles InvalidTaskIDException exceptions.
@@ -52,10 +56,13 @@ public class RestResponseEntityExceptionHandler
             (value = {InvalidTaskIDException.class})
     protected ResponseEntity<Object> invalidID(
             final RuntimeException ex, final WebRequest request) {
-        String bodyOfResponse = "Invalid task ID";
 
-        return handleExceptionInternal(ex, bodyOfResponse,
-                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+        return handleExceptionInternal(
+                ex,
+                null,
+                new HttpHeaders(),
+                HttpStatus.BAD_REQUEST,
+                request);
     }
     /**
      * Method that handles TaskNotFoundException exceptions.
@@ -72,7 +79,11 @@ public class RestResponseEntityExceptionHandler
             final RuntimeException ex, final WebRequest request) {
         String bodyOfResponse = "Task not found";
 
-        return handleExceptionInternal(ex, bodyOfResponse,
-                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+        return handleExceptionInternal(
+                ex,
+                null,
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND,
+                request);
     }
 }

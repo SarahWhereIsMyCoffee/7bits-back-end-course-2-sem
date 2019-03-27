@@ -74,9 +74,9 @@ public class TasksController {
     @GetMapping
     @ResponseBody
     public ResponseEntity<List<Task>> getAllTasks() {
-        ResponseEntity.status(HttpStatus.OK);
         return ResponseEntity
                 .ok()
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .body(tasksRepository.getAllTasks());
     }
 
@@ -98,7 +98,6 @@ public class TasksController {
                 .build()
                 .toUri();
 
-        ResponseEntity.status(HttpStatus.CREATED);
         return ResponseEntity
                 .created(location)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -124,7 +123,6 @@ public class TasksController {
             throw new TaskNotFoundException();
         }
 
-        ResponseEntity.status(HttpStatus.OK);
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -151,10 +149,8 @@ public class TasksController {
         }
         tasksRepository.deleteTask(id);
 
-        ResponseEntity.status(HttpStatus.OK);
         return ResponseEntity
                 .ok()
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .build();
     }
 
@@ -177,12 +173,12 @@ public class TasksController {
             throw new InvalidTaskIDException();
         }
 
-        if (!taskStatusValidator.isValidTaskID(updateTaskRequest.getStatus())) {
-            throw new InvalidTaskIDException();
+        if (!taskStatusValidator.isValidStatus(updateTaskRequest.getStatus())) {
+            throw new InvalidTaskStatusException();
         }
 
-        if (!taskTextValidator.isValidTaskID(updateTaskRequest.getText())) {
-            throw new InvalidTaskIDException();
+        if (!taskTextValidator.isValidTaskText(updateTaskRequest.getText())) {
+            throw new InvalidTaskTextException();
         }
 
         if (tasksRepository.getTask(id) == null) {
@@ -197,7 +193,6 @@ public class TasksController {
                         .orElseThrow(InvalidTaskStatusException::new)
         ));
 
-        ResponseEntity.status(HttpStatus.NO_CONTENT);
         return ResponseEntity
                 .noContent()
                 .build();
