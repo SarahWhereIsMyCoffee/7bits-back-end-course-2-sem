@@ -1,4 +1,4 @@
-package it.sevenbits.homeworktwo.core.validation.text.constraint;
+package it.sevenbits.homeworktwo.core.validation.status.constraint;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -8,12 +8,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation for task text validation using ConstraintValidator interface implementation.
+ * Annotation for task status validation using ConstraintValidator interface implementation.
  */
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = TaskTextConstraintValidator.class)
-public @interface ITaskTextConstraint {
+@Constraint(validatedBy = TaskStatusConstraintValidator.class)
+public @interface TaskStatusConstraint {
     /**
      * Attribute that represents error message.
      *

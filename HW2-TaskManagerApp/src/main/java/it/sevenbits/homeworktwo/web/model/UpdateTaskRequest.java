@@ -2,7 +2,6 @@ package it.sevenbits.homeworktwo.web.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.sevenbits.homeworktwo.core.validation.status.constraint.ITaskStatusConstraint;
 
 /**
  * This model separates query logic of updating new task from application business logic

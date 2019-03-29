@@ -7,10 +7,10 @@ import javax.validation.ConstraintValidatorContext;
 
 /**
  * Implementation of ConstraintValidator interface that provides functionality for task id validation
- * using @ITaskIDConstraint annotation and TaskIDValidator service instance.
+ * using @TaskIDConstraint annotation and TaskIDValidator service instance.
  */
 public class TaskIDConstraintValidator
-        implements ConstraintValidator<ITaskIDConstraint, String> {
+        implements ConstraintValidator<TaskIDConstraint, String> {
     private final ITaskIDValidator taskIDValidator;
 
     /**

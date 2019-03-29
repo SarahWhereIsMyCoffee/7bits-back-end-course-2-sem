@@ -10,7 +10,6 @@ import it.sevenbits.homeworktwo.web.model.AddTaskRequest;
 import it.sevenbits.homeworktwo.web.model.UpdateTaskRequest;
 import it.sevenbits.homeworktwo.core.validation.id.service.ITaskIDValidator;
 import it.sevenbits.homeworktwo.core.validation.status.service.ITaskStatusValidator;
-import it.sevenbits.homeworktwo.core.validation.text.service.ITaskTextValidator;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +40,6 @@ public class TasksController {
     private final ITasksRepository tasksRepository;
     private final ITaskIDValidator taskIDValidator;
     private final ITaskStatusValidator taskStatusValidator;
-    private final ITaskTextValidator taskTextValidator;
 
     /**
      * Class constructor.
@@ -49,16 +47,13 @@ public class TasksController {
      * @param tasksRepository ITaskRepository instance.
      * @param taskIDValidator ITaskIDValidator service instance.
      * @param taskStatusValidator ITaskStatusValidator service instance.
-     * @param taskTextValidator ITaskTextValidator service instance.
      */
     public TasksController(final ITasksRepository tasksRepository,
                            final ITaskIDValidator taskIDValidator,
-                           final ITaskStatusValidator taskStatusValidator,
-                           final ITaskTextValidator taskTextValidator) {
+                           final ITaskStatusValidator taskStatusValidator) {
         this.tasksRepository = tasksRepository;
         this.taskIDValidator = taskIDValidator;
         this.taskStatusValidator = taskStatusValidator;
-        this.taskTextValidator = taskTextValidator;
     }
 
     /**
@@ -170,6 +165,16 @@ public class TasksController {
                                             @Valid @RequestBody final UpdateTaskRequest updateTaskRequest) {
         if (!taskIDValidator.isValidTaskID(id)) {
             throw new InvalidTaskIDException();
+        }
+
+        if (updateTaskRequest.getStatus() != null
+                && !taskStatusValidator.isValidStatus(updateTaskRequest.getStatus())) {
+            throw new InvalidTaskStatusException();
+        }
+
+        if (updateTaskRequest.getText() != null
+                && updateTaskRequest.getText().equals("")) {
+            throw new InvalidTaskTextException();
         }
 
         if (tasksRepository.getTask(id) == null) {
