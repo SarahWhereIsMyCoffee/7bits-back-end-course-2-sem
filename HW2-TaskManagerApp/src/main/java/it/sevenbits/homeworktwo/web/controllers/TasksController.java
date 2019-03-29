@@ -12,7 +12,6 @@ import it.sevenbits.homeworktwo.core.validation.id.service.ITaskIDValidator;
 import it.sevenbits.homeworktwo.core.validation.status.service.ITaskStatusValidator;
 import it.sevenbits.homeworktwo.core.validation.text.service.ITaskTextValidator;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -173,14 +172,6 @@ public class TasksController {
             throw new InvalidTaskIDException();
         }
 
-        if (!taskStatusValidator.isValidStatus(updateTaskRequest.getStatus())) {
-            throw new InvalidTaskStatusException();
-        }
-
-        if (!taskTextValidator.isValidTaskText(updateTaskRequest.getText())) {
-            throw new InvalidTaskTextException();
-        }
-
         if (tasksRepository.getTask(id) == null) {
             throw new TaskNotFoundException();
         }
@@ -188,10 +179,11 @@ public class TasksController {
         tasksRepository.replaceTask(id, new Task(
                 id,
                 Optional.ofNullable(updateTaskRequest.getText())
-                        .orElseThrow(InvalidTaskTextException::new),
+                        .orElse(tasksRepository.getTask(id).getText()),
                 Optional.ofNullable(updateTaskRequest.getStatus())
-                        .orElseThrow(InvalidTaskStatusException::new)
-        ));
+                        .orElse(tasksRepository.getTask(id).getStatus())
+                )
+        );
 
         return ResponseEntity
                 .noContent()

@@ -32,10 +32,11 @@ public class TasksRepository implements ITasksRepository {
     @Override
     public String addTask(final AddTaskRequest addTaskRequest) {
         UUID taskID = UUID.randomUUID();
+        String taskStatus = "inbox";
         taskMap.put(taskID.toString(),
                 new Task(taskID.toString(),
                         addTaskRequest.getText(),
-                        addTaskRequest.getStatus()));
+                        taskStatus));
         return taskID.toString();
     }
 

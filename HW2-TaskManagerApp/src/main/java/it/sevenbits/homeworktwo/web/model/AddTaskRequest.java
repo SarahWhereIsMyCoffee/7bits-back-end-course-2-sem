@@ -2,7 +2,6 @@ package it.sevenbits.homeworktwo.web.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.sevenbits.homeworktwo.core.validation.status.constraint.ITaskStatusConstraint;
 import it.sevenbits.homeworktwo.core.validation.text.constraint.ITaskTextConstraint;
 
 import javax.validation.constraints.NotBlank;
@@ -19,25 +18,17 @@ public class AddTaskRequest {
     @ITaskTextConstraint
     private String text;
 
-    /**
-     *
-     */
-    @ITaskStatusConstraint
-    @NotBlank
-    private String status;
+
 
     /**
      * Constructor of the model.
      * Creates a JSON object.
      *
      * @param text String Json property.
-     * @param status String Json property.
      */
     @JsonCreator
-    public AddTaskRequest(@JsonProperty("text") final String text,
-                          @JsonProperty("status") final String status) {
+    public AddTaskRequest(@JsonProperty("text") final String text) {
         this.text = text;
-        this.status = status;
     }
 
     /**
@@ -47,14 +38,5 @@ public class AddTaskRequest {
      */
     public final String getText() {
         return text;
-    }
-
-    /**
-     * Getter for the status field.
-     *
-     * @return String status of the model.
-     */
-    public final String getStatus() {
-        return status;
     }
 }
