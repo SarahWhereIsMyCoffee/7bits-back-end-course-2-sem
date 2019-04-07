@@ -9,17 +9,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Task ITasksRepository implementation.
  */
-public class TasksRepository implements ITasksRepository {
+public class HashMapTasksRepository implements ITasksRepository {
     private Map<String, Task> taskMap;
 
     /**
-     * Constructor of TasksRepository class.
+     * Constructor of HashMapTasksRepository class.
      */
-    public TasksRepository() {
+    public HashMapTasksRepository() {
         taskMap = new HashMap<>();
     }
 
@@ -46,7 +47,13 @@ public class TasksRepository implements ITasksRepository {
      */
     @Override
     public List<Task> getAllTasks() {
-        return Collections.unmodifiableList(new ArrayList<>(taskMap.values()));
+        String inboxStatus = "inbox";
+
+        return Collections.unmodifiableList(new ArrayList<>(taskMap
+                .values()
+                .stream()
+                .filter(task -> task.getStatus().equals(inboxStatus))
+        .collect(Collectors.toList())));
     }
 
     /**
