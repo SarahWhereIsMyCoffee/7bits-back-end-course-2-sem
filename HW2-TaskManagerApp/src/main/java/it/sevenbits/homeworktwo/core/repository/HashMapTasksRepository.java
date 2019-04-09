@@ -46,13 +46,12 @@ public class HashMapTasksRepository implements ITasksRepository {
      * @return "Task" list.
      */
     @Override
-    public List<Task> getAllTasks() {
-        String inboxStatus = "inbox";
+    public List<Task> getAllTasks(String status) {
 
         return Collections.unmodifiableList(new ArrayList<>(taskMap
                 .values()
                 .stream()
-                .filter(task -> task.getStatus().equals(inboxStatus))
+                .filter(task -> task.getStatus().equals(status))
         .collect(Collectors.toList())));
     }
 
